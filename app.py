@@ -65,7 +65,7 @@ def create_app(test_config=None):
 
     @app.route('/login')
     def login_redirect():
-        return auth0.authorize_redirect(redirect_uri='http://localhost:5000/login/callback', audience='movie_producer', response_type='token')
+        return auth0.authorize_redirect(redirect_uri='https://fsnd-capstone-elp.herokuapp.com/login/callback', audience='movie_producer', response_type='token')
         # webbrowser.open(f'https://{AUTH0_DOMAIN}/authorize?audience={AUTH0_AUDIENCE}&response_type=token&client_id={AUTH0_CLIENT_ID}&redirect_uri={AUTH0_CALLBACK}')
         # return("You are logged in!")
 
