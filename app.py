@@ -32,7 +32,7 @@ def create_app(test_config=None):
     setup_db(app, database_connection)
     setup_auth(app)
     CORS(app)
-    current_token = None
+    our_token = None
     oauth = OAuth(app)
     auth0 = oauth.register(
         'auth0',
@@ -50,8 +50,8 @@ def create_app(test_config=None):
                              'GET, POST, PATCH, DELETE, OPTIONS')
         return response
 
-    def get_app():
-      return app
+    def get_token():
+      return session.get('current_token')
 
     @app.route('/')
     def index():
@@ -60,7 +60,7 @@ def create_app(test_config=None):
     @app.route('/show-token')
     def show_token():
       return jsonify({
-        'token': current_token
+        'token': session.get('current_token')
       })
 
     @app.route('/login')
@@ -95,7 +95,8 @@ def create_app(test_config=None):
         token = str(request.get_data())
         token = token.split('=')[1][:-1]
         app.logger.info(token)
-        current_token = token
+        session['current_token'] = token
+        our_token = token
         set_current_token(token)
         return redirect('/')
 
@@ -103,6 +104,7 @@ def create_app(test_config=None):
     @requires_auth('get:actors')
     def get_actors(jwt):
         actors = Actor.query.all()
+        setup_auth(app)
 
         formatted_actors = [actor.format() for actor in actors]
 
@@ -114,6 +116,7 @@ def create_app(test_config=None):
     @app.route('/movies', methods=['GET'])
     @requires_auth('get:movies')
     def get_movies(jwt):
+        setup_auth(app)
         movies = Movie.query.all()
 
         formatted_movies = [movie.format() for movie in movies]

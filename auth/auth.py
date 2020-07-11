@@ -1,8 +1,9 @@
 import json
-from flask import request, _request_ctx_stack, abort
+from flask import request, _request_ctx_stack, abort, session
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
+import os
 
 
 
@@ -25,7 +26,9 @@ class AuthError(Exception):
         self.status_code = status_code
 
 def setup_auth(app):
-    app.logger.info("Called and saved")
+    app.logger.info("TOKEN IN AUTH IS: ")
+    #app.logger.info(session.get('current_token'))
+    #session['app'] = app
 
     #oauth = OAuth(app)
     
@@ -36,11 +39,14 @@ def setup_auth(app):
 
 def set_current_token(token):
     current_token = token
+    session['current_token'] = token
 
 
 def get_token_auth_header():
-    if current_token is not None:
-        token = current_token
+
+    print(session.get('current_token'))
+    if session.get('current_token') is not None:
+        token = session.get('current_token')
     else:
 
         if 'Authorization' not in request.headers:
