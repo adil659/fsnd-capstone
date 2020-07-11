@@ -6,3 +6,4 @@ export AUTH0_AUDIENCE='movie_producer'
 export AUTH0_CLIENT_ID='FxBGhksxly32jgz0V7A7KdiazMScOpSk'
 export AUTH0_CLIENT_SECRET='CPRiVbCsacuO2AKnwgS8t-XQl1gw5W3bDQeEpSR5aMqFrSDRxNwMGiYEx5xqDixJ'
 export AUTH0_CALLBACK='http://localhost:5000/login/callback'
+export ALGORITHMS=['RS256']
