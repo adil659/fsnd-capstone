@@ -16,8 +16,8 @@ AuthError Exception
 A standardized way to communicate auth failure modes
 '''
 oauth = None
-
 current_token = None
+
 
 class AuthError(Exception):
     def __init__(self, error, status_code):
@@ -25,7 +25,8 @@ class AuthError(Exception):
         self.status_code = status_code
 
 def setup_auth(app):
-    app.logger.info("CALLED AND SAVED")
+    app.logger.info("Called and saved")
+
     #oauth = OAuth(app)
     
 # Auth Header
@@ -34,11 +35,11 @@ def setup_auth(app):
 #    login_link = f'https://{AUTH0_DOMAIN}/authorize?audience={AUDIENCE}&response_type=token&client_id={CLIENT_ID}&redirect_uri={CALLBACK_URL}'
 
 def set_current_token(token):
-    current_token = None
+    current_token = token
 
 
 def get_token_auth_header():
-    if current_token is not None or False:
+    if current_token is not None:
         token = current_token
     else:
 
@@ -143,3 +144,5 @@ def requires_auth(permission=''):
 
         return wrapper
     return requires_auth_decorator
+
+
