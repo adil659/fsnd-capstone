@@ -101,8 +101,8 @@ def create_app(test_config=None):
         return redirect('/')
 
     @app.route('/actors', methods=['GET'])
-    @requires_auth('get:actors')
-    def get_actors(jwt):
+    #@requires_auth('get:actors')
+    def get_actors():
         actors = Actor.query.all()
         setup_auth(app)
 
@@ -114,8 +114,8 @@ def create_app(test_config=None):
         })
 
     @app.route('/movies', methods=['GET'])
-    @requires_auth('get:movies')
-    def get_movies(jwt):
+    #@requires_auth('get:movies')
+    def get_movies():
         setup_auth(app)
         movies = Movie.query.all()
 
