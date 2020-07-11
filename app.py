@@ -28,7 +28,7 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
     app.secret_key = 'super secret key'
-    database_connection = 'postgresql://postgres:adil1234@localhost:5432/capstonedb'
+    database_connection = 'postgres://dogpmlnfdrlcxy:37703ac2f0a82ad2afdce9621ea8fe314dfb158d4173376fb18ab2a67146e5ad@ec2-54-234-28-165.compute-1.amazonaws.com:5432/d2o4v6jpea8g48'
     setup_db(app, database_connection)
     setup_auth(app)
     CORS(app)
