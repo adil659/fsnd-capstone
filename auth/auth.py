@@ -6,7 +6,6 @@ from urllib.request import urlopen
 import os
 
 
-
 AUTH0_DOMAIN = 'dev-md-8ge9f.us.auth0.com'
 ALGORITHMS = ['RS256']
 API_MOVIE_PRODUCER = 'movie_producer'
@@ -25,17 +24,19 @@ class AuthError(Exception):
         self.error = error
         self.status_code = status_code
 
+
 def setup_auth(app):
     app.logger.info("TOKEN IN AUTH IS: ")
-    #app.logger.info(session.get('current_token'))
+    # app.logger.info(session.get('current_token'))
     #session['app'] = app
 
     #oauth = OAuth(app)
-    
+
 # Auth Header
 
-#def login_authentication():
+# def login_authentication():
 #    login_link = f'https://{AUTH0_DOMAIN}/authorize?audience={AUDIENCE}&response_type=token&client_id={CLIENT_ID}&redirect_uri={CALLBACK_URL}'
+
 
 def set_current_token(token):
     current_token = token
@@ -63,21 +64,22 @@ def get_token_auth_header():
 
     return token
 
+
 def check_permissions(permission, payload):
     if 'permissions' not in payload:
         abort(400)
-
 
     if permission not in payload['permissions']:
         abort(403)
 
     return True
 
+
 def verify_decode_jwt(token, permission):
     # GET THE PUBLIC KEY FROM AUTH0
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
     jwks = json.loads(jsonurl.read())
-    
+
     # GET THE DATA IN THE HEADER
     unverified_header = jwt.get_unverified_header(token)
 
@@ -98,7 +100,7 @@ def verify_decode_jwt(token, permission):
                 'n': key['n'],
                 'e': key['e']
             }
-    
+
     # Finally, verify!!!
     if rsa_key:
         try:
@@ -130,9 +132,9 @@ def verify_decode_jwt(token, permission):
                 'description': 'Unable to parse authentication token.'
             }, 400)
     raise AuthError({
-                'code': 'invalid_header',
+        'code': 'invalid_header',
                 'description': 'Unable to find the appropriate key.'
-            }, 400)
+    }, 400)
 
 
 def requires_auth(permission=''):
@@ -142,7 +144,7 @@ def requires_auth(permission=''):
             token = get_token_auth_header()
             try:
                 payload = verify_decode_jwt(token, permission)
-            except:
+            except BaseException:
                 abort(403)
             #app.logger.info('payload: ' + payload)
             result = check_permissions(permission, payload)
@@ -150,5 +152,3 @@ def requires_auth(permission=''):
 
         return wrapper
     return requires_auth_decorator
-
-

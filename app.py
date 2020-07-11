@@ -51,7 +51,7 @@ def create_app(test_config=None):
         return response
 
     def get_token():
-      return session.get('current_token')
+        return session.get('current_token')
 
     @app.route('/')
     def index():
@@ -59,13 +59,16 @@ def create_app(test_config=None):
 
     @app.route('/show-token')
     def show_token():
-      return jsonify({
-        'token': session.get('current_token')
-      })
+        return jsonify({
+            'token': session.get('current_token')
+        })
 
     @app.route('/login')
     def login_redirect():
-        return auth0.authorize_redirect(redirect_uri='https://fsnd-capstone-elp.herokuapp.com/login/callback', audience='movie_producer', response_type='token')
+        return auth0.authorize_redirect(
+            redirect_uri='https://fsnd-capstone-elp.herokuapp.com/login/callback',
+            audience='movie_producer',
+            response_type='token')
         # webbrowser.open(f'https://{AUTH0_DOMAIN}/authorize?audience={AUTH0_AUDIENCE}&response_type=token&client_id={AUTH0_CLIENT_ID}&redirect_uri={AUTH0_CALLBACK}')
         # return("You are logged in!")
 
@@ -87,7 +90,8 @@ def create_app(test_config=None):
 
         #params = {'returnTo': 'http://localhost:5000', 'client_id': 'FxBGhksxly32jgz0V7A7KdiazMScOpSk'}
         #r = requests.get(AUTH0_DOMAIN + '/v2/logout', params=params)
-        # return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
+        # return redirect(auth0.api_base_url + '/v2/logout?' +
+        # urlencode(params))
         return 'Successfully logged out!'
 
     @app.route('/login/get_access_token', methods=['POST'])
@@ -101,7 +105,7 @@ def create_app(test_config=None):
         return redirect('/')
 
     @app.route('/actors', methods=['GET'])
-    #@requires_auth('get:actors')
+    # @requires_auth('get:actors')
     def get_actors():
         actors = Actor.query.all()
         setup_auth(app)
@@ -114,7 +118,7 @@ def create_app(test_config=None):
         })
 
     @app.route('/movies', methods=['GET'])
-    #@requires_auth('get:movies')
+    # @requires_auth('get:movies')
     def get_movies():
         setup_auth(app)
         movies = Movie.query.all()
@@ -210,7 +214,6 @@ def create_app(test_config=None):
     @requires_auth('delete:actors')
     def delete_actor(jwt, actor_id):
 
-
         app.logger.info("GOING TO DELETE")
         actor = Actor.query.get(actor_id)
 
@@ -265,8 +268,8 @@ def create_app(test_config=None):
 
     return app
 
+
 app = create_app()
 
 if __name__ == '__main__':
     app.run()
-
