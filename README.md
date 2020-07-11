@@ -25,13 +25,18 @@ Following this the application endpoints are ready to be tested with the deploye
 python3 test_app.py
 The deployed application can be found here:
 
-https://fsnd-model.herokuapp.com/
+https://fsnd-capstone-elp.herokuapp.com/
 
 Note: If the existing JWT's are expired new ones could be obtained by following the link on the application homepage. For the Casting Director JWT please log in with the following credentials:
 
-email: a.tettinger@yahoo.com password: GoUdacity123
+Athentication:
+To login, use the route: 
 
-For the Casting Assistant JWT: email: antal.tettinger@clovio.com password: GoUDacity123
+'/login'
+For executive_director account use the following account:
+Username: aughr063@uottawa.ca 
+Password: Adil1234! 
+
 
 You'll be redirected to the main page where the JWT can be copied from the URL after the # part. Paste the JWT into the setup.sh into the CA_TOKEN and CD_TOKEN variables accordingly.
 
@@ -46,16 +51,19 @@ Avaible Endpoints
 In order to play the game, a number of operations take place, each one of them belong to a specific endpoint. The available operations are:
 
 /
-GET movie
-GET actor
-DELETE movie
-POST movie
-PATCH movie
+GET movies
+GET actors
+POST movies
+POST actors
+PATCH movies
+PATCH actors
+DELETE movies
+DELETE actors
 '/'
 
 This is the main page of the application, it displays a link to log in and generate new JWT tokens.
 
-GET '/movie'
+GET '/movies'
 
 This endpoint fetches all movies.
 
@@ -66,9 +74,9 @@ Returns: The return should include an success: True message along with a list of
 
 {
   'success': True,
-  'movies': movie_list_json
+  'movies': formatted_movies
 }
-GET '/actor'
+GET '/actors'
 
 This endpoint fetches all actors.
 
@@ -79,22 +87,10 @@ Returns: The return should include an success: True message along with a list of
 
 {
   'success': True,
-  'actors': actor_list_json
+  'actors': formatted_actors
 }
-DELETE '/movie/"id"'
 
-This endpoint allows you to delete a movie, based on its id.
-
-Request Arguments:
-
-id (integer) of the movie to delete.
-Returns: An object with a success message, the id of the movie deleted and the new amount of questions avaibale.
-
-{
-  'success': True,
-  'delete': str(delete_id)
-}
-POST '/movie'
+POST '/movies'
 
 This endpoint allows you to POST a movie.
 
@@ -106,46 +102,125 @@ A JSON object containing the title and the release date:
   'title': 'title',
   'release_date': 'release_date'
 }
-Returns: If there are no errors the same JSON data will be returned:
+Returns: If there are no errors the following JSON data will be returned:
 
 {
-  'title': 'title',
-  'release_date': 'release_date'
+  'success': True,
+  'movie': 'movie.format()'
 }
-PATCH '/movie/"id"'
+
+POST '/actors'
+
+This endpoint allows you to POST a movie.
+
+Request Arguments:
+
+A JSON object containing the name, age and the gender:
+
+{
+  'name': 'name',
+  'age': 'age',
+  'gender': 'gender
+}
+Returns: If there are no errors the following JSON data will be returned:
+
+{
+  'success': True,
+  'actor': 'actor.format()'
+}
+
+PATCH '/movies/"id"'
 
 This endpoint allows you to PATCH an existing movie.
 
 Request Arguments:
 
-question (Text)
-answer (Text)
-difficulty (integer) 1 to 4.
-category (integer) 1 to 6.
-Returns: An object with a success message, and the patched movie in JSON format.
+A JSON object containing the title and the release date:
+
+{
+  'title': 'title',
+  'release_date': 'release_date'
+}
 
 {
   'success': True,
-  'movies': patched_movie_json
+  'movies': patched_movie.format()
 }
+
+PATCH '/actors/"id"'
+
+This endpoint allows you to PATCH an existing actor.
+
+Request Arguments:
+
+A JSON object containing the name, age and the gender:
+
+{
+  'name': 'title',
+  'age': 'age',
+  'gender': 'gender'
+}
+
+{
+  'success': True,
+  'movies': patched_actor.format()
+}
+
+
+DELETE '/movies/"id"'
+
+This endpoint allows you to delete a movie, based on its id.
+
+Request Arguments:
+
+id (integer) of the movie to delete.
+Returns: An object with a success message, the id of the movie deleted.
+
+{
+  'success': True,
+  'movie_id': str(delete_id)
+}
+
+DELETE '/actors/"id"'
+
+This endpoint allows you to delete a movie, based on its id.
+
+Request Arguments:
+
+id (integer) of the movie to delete.
+Returns: An object with a success message, the id of the actor deleted.
+
+{
+  'success': True,
+  'actor_id': str(delete_id)
+}
+
+
+
 Testing
 To run the tests, run
 
 python test_app.py
 Available Roles
-There are 2 roles and 6 different permissions defined in the Authorization backend for this application
+There are 3 roles and 6 different permissions defined in the Authorization backend for this application
 
 Permissions:
 ```
-'get:movie': Get the list of all movies
-'get:actor': Get the list of all actors
-'post:movie': Post a new movie
-'post:actor': Post a new actor
-'delete:movie': Delete a movie
+'get:movies': Get the list of all movies
+'get:actors': Get the list of all actors
+'post:movies': Post a new movie
+'post:actors': Post a new actor
+'patch:movies': Update a movie
+'patch:actors': Update a actor
+'delete:movies': Delete a movie
+'delete:actors': Delete a actor
 ```
 Roles
 Casting Assistant
 Can list actors and movies.
 
 Casting Director
-Can list movies, actors, post movies, modify movies and delete movies.
+Can list movies & actors, post actors, update actors, delete actors
+
+Executive Director
+Can list movies & actors, post movies & actors, update movies & actors, delete movies & actors
